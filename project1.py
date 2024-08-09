@@ -1,38 +1,49 @@
+
+
 def ask_question(question, options, correct_answer):
-  """Asks a multiple-choice question and returns True if the answer is correct."""
+  """Asks a question and returns True if the answer is correct, False otherwise."""
   print(question)
   for idx, option in enumerate(options, 1):
-   print(f"{idx}. {option}")
-  user_answer = int(input("Your answer (enter the correct number): "))
+    print(f"{idx}. {option}")
+  while True:
+    try:
+      answer = int(input("Your answer (1-4): "))
+      if 1 <= answer <= 4:
+        break
+      else:
+        print("Invalid input. Please enter a number between 1 and 3.")
+    except ValueError:
+      print("Invalid input. Please enter a number.")
+  return answer == correct_answer
 
-  return user_answer == correct_answer
-def keep_score(questions, pass_mark):
-  """Runs the quiz and keeps track of the score."""
-  score = 0
+def calculate_score(num_correct, num_questions):
+  """Calculates and prints the score."""
+  score = (num_correct / num_questions) * 100
+  print(f"You got {num_correct} out of {num_questions} questions right.")
+  print(f"Your score is {score:.2f}%.")
+
+def play_quiz():
+  """Plays a multi-choice quiz."""
+  questions = [
+      ("(Q1). What is the capital of France?", ["Rome", "Berlin", "Madrid", "Paris"], 4),
+      ("(Q2). What planet is known as the red planet?", ["Earth", "Mars", "Jupiter", "Venus"], 2),
+      ("(Q3). Who wrote 'To kill a Mockingbird'?", ["Harper Lee", "J.K Rowling", "George Orwell", "Ernest Hemingway"], 1),
+      ("(Q4). What is the largest ocean on Earth?", ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"], 4),
+      ("(Q5). What is the chemical symbol for gold?", ["Au", "Ag", "Fe", "Hg"], 1),
+      ("(Q6). Who painted the Mona Lisa?", ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"], 3),
+      ("(Q7). Which element has the atomic number 1?", ["Oxygen", "Hydrogen", "Carbon", "Helium"], 2),
+      ("(Q8). What is the smallest unit of life?", ["Organ", "Tissue", "Cell", "Molecule"], 3),
+      ("(Q9). Who is known as the father of computer?", ["Charles Babbage", "Alan Turing", "Bill Gates", "Steve Jobs"], 1),
+      ("(Q10). Which country has the largest land mass?", ["Canada", "China", "United States of America", "Russia"], 4)
+  ]
+  num_correct = 0
   for question, options, correct_answer in questions:
     if ask_question(question, options, correct_answer):
-      score += 1
-      print("Correct!\n")
+      num_correct += 1
+      print("Correct")
     else:
-      print(f"Incorrect. The answer was: {options[correct_answer]}\n")
+        print("incorrect")
+  calculate_score(num_correct, len(questions))
 
-  print(f"You got {score} out of {len(questions)} questions right.")
-  if (score / len(questions)) * 100 >= pass_mark:
-    print("Congratulations, you passed!")
-  else:
-    print("You did not reach the pass mark. You failed kindly retake course in 24hrs.")
+play_quiz()
 
-def main():
-  """Defines the quiz questions and starts the quiz."""
-  questions = [
-      ("Which programming language are we working on ?", ["C++", "Python", "Javascript"], 2),
-      ("How do make a python directory?", ["mkdir", "mkdr", "makedirs"], 1),
-      ("How do you create multiple directories in python?", ["mkdir", "mkdr", "makedirs"], 3),
-
-  ]
-  pass_mark = 60  # Set the pass mark percentage
-
-  keep_score(questions, pass_mark)
-
-if __name__ == "__main__":
-  main()
